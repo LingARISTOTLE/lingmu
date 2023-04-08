@@ -1,14 +1,14 @@
 package player
 
 import (
-	"lingmu/game-server/chat"
-	"lingmu/game-server/function"
+	"lingmu/game-server/define"
 )
 
 type Player struct {
-	UId        uint64
-	FriendList []uint64          //朋友
-	chChat     chan chat.Private //私聊
+	UId            uint64
+	FriendList     []uint64                 //朋友
+	HandlerParamCh chan define.HandlerParam //事件通道
+	handlers       map[string]Handler       //注册处理方法
 }
 
 /*
@@ -17,31 +17,11 @@ NewPlayer 构造方法
 func NewPlayer() *Player {
 	p := &Player{
 		UId:        0,
-		FriendList: nil,
+		FriendList: make([]uint64, 100),
+		handlers:   make(map[string]Handler),
 	}
+	p.HandlerRegister() //将自己的三个方法注册到处理方法中
 	return p
-}
-
-/*
-AddFriend
-@Description：添加好友
-@receiver p：当前对象
-@param fId：好友id
-*/
-func (p *Player) AddFriend(fId uint64) {
-	if !function.CheckInNumberSlice(fId, p.FriendList) {
-		p.FriendList = append(p.FriendList, fId)
-	}
-}
-
-/*
-DelFriend
-@Description:删除好友
-@receiver p：当前对象
-@param fId：好友id
-*/
-func (p *Player) DelFriend(fId uint64) {
-	p.FriendList = function.DelEleInSlice(fId, p.FriendList)
 }
 
 /*
@@ -52,12 +32,10 @@ Run
 func (p *Player) Run() {
 	for {
 		select {
-		case chatMsg := <-p.chChat: //如果chChat管道有值了，那么读取出来处理私信消息
-			p.ResolveChatMsg(chatMsg)
+		case handlerParam := <-p.HandlerParamCh: //循环监听事件，当有事件发生是处理数据
+			if fn, ok := p.handlers[handlerParam.HandlerKey]; ok {
+				fn(handlerParam.Data)
+			}
 		}
 	}
-}
-
-func (p *Player) ResolveChatMsg(chatMsg chat.Message) {
-
 }
