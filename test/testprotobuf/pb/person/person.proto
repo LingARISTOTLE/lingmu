@@ -1,0 +1,26 @@
+syntax = "proto3"; //告诉编译器用proto3来解读
+
+package person;
+
+option go_package = "lingmu/test/testprotobuf/pb/person;person";//定义包路径;别名（import有关）
+
+message Person{
+  //前面是结构体类型，后面是属性唯一标识符key
+  string name = 1;
+  int32 age = 2;
+  bool sex = 3;
+  //切片定义
+  repeated string test_slice = 4;
+  //map定义
+  map<string, string> test_map = 5;
+}
+
+message Home{
+  //引用其他Message
+  repeated Person persons = 1;
+  //直接定义其他message
+  message V {
+    string name = 1;
+  }
+  V v = 2;
+}

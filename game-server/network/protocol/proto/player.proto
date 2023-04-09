@@ -1,0 +1,45 @@
+syntax = "proto3";
+
+package player;
+
+option go_package = "/player";
+
+message CSLogin{
+  uint64 UId = 1;//玩家Id
+}
+
+message SCLogin{
+  bool  Ok = 1;//请求成功与否描述
+}
+
+message CSAddFriend{
+  uint64 UId = 1; //玩家Id
+}
+
+message SCAddFriend{
+  string  Desc = 1;//请求成功与否描述
+}
+
+message CSDelFriend{
+  uint64  UId = 1; //玩家Id
+
+}
+
+message SCDelFriend{
+  string Desc = 1; //请求成功与否描述
+}
+
+message CSSendChatMsg{
+
+  uint64  UId = 1;//玩家Id
+  ChatMessage msg = 2;//私信消息
+}
+
+message SCSendChatMsg{
+
+}
+
+message ChatMessage{
+  string Content = 1; //私信消息内容
+  repeated bytes extra = 2;
+}

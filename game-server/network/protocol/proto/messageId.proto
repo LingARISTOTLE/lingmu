@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package messageId;
+
+option go_package = "/messageId";
+
+//定义Message消息的id
+enum MessageId{
+
+  None = 0;
+  //CS: C-->S
+  //SC: S-->C
+
+  //客户端登录请求
+  CSLogin = 50001;
+  //服务器响应登录请求
+  SCLogin = 50002;
+
+  //player
+  //添加好友
+  CSAddFriend = 100001;
+  SCAddFriend = 100002;
+  //删除好友
+  CSDelFriend = 100003;
+  SCDelFriend = 100004;
+  //聊天包
+  CSSendChatMsg = 100005;
+  SCSendChatMsg = 100006;
+
+}
