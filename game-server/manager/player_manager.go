@@ -23,6 +23,10 @@ func (pm *PlayManager) Add(p player.Player) {
 	go p.Run()
 }
 
+func (pm *PlayManager) Del(p player.Player) {
+	delete(pm.players, p.UId)
+}
+
 /*
 Run
 @Description: 启动游戏管理器

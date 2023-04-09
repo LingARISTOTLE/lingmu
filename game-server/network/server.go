@@ -1,14 +1,13 @@
 package network
 
 import (
-	"fmt"
 	"net"
 )
 
 type Server struct {
 	listener net.Listener
-	address  string
-	network  string
+	//address  string
+	//network  string
 }
 
 /*
@@ -19,26 +18,25 @@ NewServer
 @return *Server
 */
 func NewServer(address string, network string) *Server {
-	return &Server{
-		listener: nil,
-		address:  address,
-		network:  network,
+	//获取tcp连接地址
+	resolveTCPAddr, err := net.ResolveTCPAddr("tcp6", address)
+	if err != nil {
+		panic(err)
 	}
+
+	//获取连接监听器
+	tcpListener, err := net.ListenTCP("tcp6", resolveTCPAddr)
+	if err != nil {
+		panic(err)
+	}
+
+	s := &Server{}
+	s.listener = tcpListener
+
+	return s
 }
 
 func (s *Server) Run() {
-	//获取tcp连接地址
-	resolveTCPAddr, err := net.ResolveTCPAddr("tcp6", s.address)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	tcpListener, err := net.ListenTCP("tcp6", resolveTCPAddr)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	s.listener = tcpListener
 
 	for {
 		//循环监听
@@ -50,7 +48,9 @@ func (s *Server) Run() {
 		go func() {
 			//生成session
 			newSession := NewSession(conn)
+			SessionMgrInstance.AddSession(newSession)
 			newSession.Run()
+			SessionMgrInstance.DelSession(newSession.UId)
 		}()
 	}
 

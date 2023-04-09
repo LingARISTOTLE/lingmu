@@ -8,14 +8,16 @@ import (
 )
 
 type Session struct {
-	conn    net.Conn      //连接
+	UId     int64         //连接序号
+	Conn    net.Conn      //连接
+	IsClose bool          //连接是否关闭
 	packer  *NormalPacker //打包方式
 	chWrite chan *Message //用于写回的通道，当处理完请求后会生成响应包放在chWrite管道
 }
 
 func NewSession(conn net.Conn) *Session {
 	return &Session{
-		conn:    conn,
+		Conn:    conn,
 		packer:  NewNormalPacker(binary.BigEndian), //采用大端方式去解析
 		chWrite: make(chan *Message, 1),            //新建一个Message管道，一次只能进行单个Message的写回
 	}
@@ -34,15 +36,15 @@ Read
 */
 func (s *Session) Read() {
 	for {
-		//设置超时时间
-		err := s.conn.SetReadDeadline(time.Now().Add(time.Second))
+		//设置超时时间为1s
+		err := s.Conn.SetReadDeadline(time.Now().Add(time.Second))
 		if err != nil {
 			fmt.Println(err)
 			continue
 		}
 
 		//通过连接拿到网络包
-		message, err := s.packer.UnPack(s.conn)
+		message, err := s.packer.UnPack(s.Conn)
 		if err != nil {
 			fmt.Println(err)
 			continue
@@ -62,7 +64,7 @@ func (s *Session) Read() {
 
 func (s *Session) Write() {
 	//设置超时时间
-	err := s.conn.SetWriteDeadline(time.Now().Add(time.Second))
+	err := s.Conn.SetWriteDeadline(time.Now().Add(time.Second))
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -77,11 +79,19 @@ func (s *Session) Write() {
 }
 
 func (s *Session) send(message *Message) {
+	err := s.Conn.SetWriteDeadline(time.Now().Add(time.Second))
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
 	bytes, err := s.packer.Pack(message)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
-	_, err = s.conn.Write(bytes)
+
+	_, err = s.Conn.Write(bytes)
 	if err != nil {
 		fmt.Println(err)
 	}

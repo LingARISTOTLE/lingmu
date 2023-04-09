@@ -9,7 +9,7 @@ import (
 
 type Client struct {
 	Address string
-	packer  *NormalPacker
+	packer  IPacker       //这里使用多态决定创建的对象
 	chMsg   chan *Message //消息管道
 }
 
