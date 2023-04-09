@@ -33,17 +33,19 @@ Read
 @receiver s
 */
 func (s *Session) Read() {
-	//设置超时时间
-	err := s.conn.SetReadDeadline(time.Now().Add(time.Second))
-	if err != nil {
-		fmt.Println(err)
-	}
-
 	for {
+		//设置超时时间
+		err := s.conn.SetReadDeadline(time.Now().Add(time.Second))
+		if err != nil {
+			fmt.Println(err)
+			continue
+		}
+
 		//通过连接拿到网络包
 		message, err := s.packer.UnPack(s.conn)
 		if err != nil {
 			fmt.Println(err)
+			continue
 		}
 		fmt.Println("server receive message:", string(message.Data))
 		//处理接收到的message
