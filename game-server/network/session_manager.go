@@ -10,7 +10,7 @@ type SessionMgr struct {
 }
 
 var (
-	SessionMgrInstance SessionMgr //群居变量，一个项目只有一个
+	SessionMgrInstance SessionMgr //全局变量，一个项目只有一个
 	onceInitSessionMgr sync.Once  //sync.Once赋予的Do回调只可以调用一次
 )
 

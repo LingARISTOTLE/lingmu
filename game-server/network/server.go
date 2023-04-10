@@ -5,7 +5,8 @@ import (
 )
 
 type Server struct {
-	listener net.Listener
+	listener        net.Listener
+	OnSessionPacket func(*SessionPacket)
 	//address  string
 	//network  string
 }
@@ -17,7 +18,7 @@ NewServer
 @param network
 @return *Server
 */
-func NewServer(address string, network string) *Server {
+func NewServer(address string) *Server {
 	//获取tcp连接地址
 	resolveTCPAddr, err := net.ResolveTCPAddr("tcp6", address)
 	if err != nil {

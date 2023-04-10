@@ -8,9 +8,10 @@ import (
 )
 
 type Client struct {
-	Address string
-	packer  IPacker       //这里使用多态决定创建的对象
-	chMsg   chan *Message //消息管道
+	Address   string
+	packer    IPacker                     //这里使用多态决定创建的对象
+	ChMsg     chan *Message               //消息管道
+	OnMessage func(message *ClientPacket) //客户端网络包（包含传输信息和连接）
 }
 
 func NewClient(address string) *Client {
@@ -19,7 +20,7 @@ func NewClient(address string) *Client {
 		packer: &NormalPacker{
 			Order: binary.BigEndian, // 大端解读
 		},
-		chMsg: make(chan *Message, 1),
+		ChMsg: make(chan *Message, 1),
 	}
 }
 
@@ -49,7 +50,7 @@ func (c *Client) Write(conn net.Conn) {
 				Data: []byte("hello,world"),
 			})
 
-		case msg := <-c.chMsg:
+		case msg := <-c.ChMsg:
 			c.send(conn, msg)
 		}
 
@@ -83,6 +84,12 @@ func (c *Client) Read(conn net.Conn) {
 			fmt.Println(err)
 			continue
 		}
+
+		//调用消息方法，包装连接
+		c.OnMessage(&ClientPacket{
+			Msg:  message,
+			Conn: conn,
+		})
 
 		fmt.Println("resp message:", string(message.Data))
 
