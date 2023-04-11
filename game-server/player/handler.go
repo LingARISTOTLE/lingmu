@@ -35,11 +35,11 @@ func (p *Player) AddFriend(packet *network.Message) {
 	}
 
 	response := &network.Message{
-		Id:   uint64(messageId.MessageId_SCSendChatMsg),
+		Id:   uint64(messageId.MessageId_SCAddFriend),
 		Data: bytes,
 	}
 
-	p.session.SendMsg(response)
+	p.Session.SendMsg(response)
 }
 
 /*
@@ -68,7 +68,7 @@ func (p *Player) DelFriend(packet *network.Message) {
 		Data: bytes,
 	}
 
-	p.session.SendMsg(response)
+	p.Session.SendMsg(response)
 }
 
 /*
@@ -97,5 +97,5 @@ func (p *Player) ResolveChatMsg(packet *network.Message) {
 		Data: bytes,
 	}
 
-	p.session.SendMsg(response)
+	p.Session.SendMsg(response)
 }

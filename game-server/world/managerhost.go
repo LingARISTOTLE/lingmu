@@ -19,7 +19,7 @@ type ManagerHost struct {
 
 func NewManagerHost() *ManagerHost {
 	m := &ManagerHost{
-		Pm: &manager.PlayManager{},
+		Pm: manager.NewPlayManager(),
 	}
 	m.Server = network.NewServer(":8023")
 	m.Server.OnSessionPacket = m.OnSessionPacket
@@ -35,7 +35,7 @@ func (m *ManagerHost) Run() {
 	//启动服务器
 	go m.Server.Run()
 	//启动玩家管理器
-	//go m.Pm.Run()
+	go m.Pm.Run()
 }
 
 /*

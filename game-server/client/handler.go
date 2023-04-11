@@ -108,6 +108,8 @@ func (c *ClientManager) AddFriend(param *InputParam) {
 
 	//传输到发送通道
 	c.Transport(id, msg)
+
+	fmt.Println("添加好友成功")
 }
 
 /*

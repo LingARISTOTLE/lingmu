@@ -10,7 +10,7 @@ type Player struct {
 	FriendList     []uint64                        //朋友
 	HandlerParamCh chan *network.Message           //事件通道
 	handlers       map[messageId.MessageId]Handler //注册处理方法
-	session        *network.Session                //用户会话
+	Session        *network.Session                //用户会话
 }
 
 /*

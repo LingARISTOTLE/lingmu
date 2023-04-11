@@ -53,13 +53,14 @@ func (s *Session) Read() {
 		}
 		fmt.Println("server receive message:", string(message.Data))
 		//处理接收到的message
-		//...
-
 		//生成服务器网络包，处理消息
 		s.MessageHandler(&SessionPacket{
 			Msg:  message,
 			Sess: s,
 		})
+		//...
+		//这里应该将生成的网络包交给组管理器的OnMessagePacket去处理
+		//...
 
 		//处理完后写回
 		//s.WriteCh <- &Message{
@@ -70,6 +71,11 @@ func (s *Session) Read() {
 
 }
 
+/*
+Write
+@Description: 写回客户端
+@receiver s
+*/
 func (s *Session) Write() {
 
 	for {

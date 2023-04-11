@@ -25,6 +25,10 @@ Add
 @param p
 */
 func (pm *PlayManager) Add(p *player.Player) {
+	//如果用户已经在线了，那么就不添加了
+	if pm.players[p.UId] != nil {
+		return
+	}
 	pm.players[p.UId] = p
 	//添加玩家在线后，启动玩家协程
 	go p.Run()

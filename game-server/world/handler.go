@@ -70,9 +70,13 @@ func (m *ManagerHost) UserLogin(packet *network.SessionPacket) {
 	//每个玩家都拥有写回管道
 	newPlayer.HandlerParamCh = packet.Sess.WriteCh
 	packet.Sess.IsPlayerOnline = true
-	//将当前玩家交给PlayerManager去管理
+
+	packet.Sess.UId = newPlayer.UId
+	newPlayer.Session = packet.Sess
+
+	//将当前玩家交给PlayerManager去管理，玩家管理器会为当前玩家启动协程
 	m.Pm.Add(newPlayer)
 	//启动玩家线程
-	newPlayer.Run()
+	//newPlayer.Run()
 
 }
