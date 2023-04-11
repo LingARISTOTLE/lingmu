@@ -5,6 +5,7 @@ import (
 	sugar "github.com/LingARISTOTLE/lingotools"
 	"github.com/golang/protobuf/proto"
 	"lingmu/game-server/network"
+	"lingmu/game-server/network/protocol/gen/messageId"
 	"lingmu/game-server/network/protocol/gen/player"
 )
 
@@ -28,6 +29,17 @@ func (p *Player) AddFriend(packet *network.Message) {
 		p.FriendList = append(p.FriendList, request.UId)
 	}
 
+	bytes, err := proto.Marshal(&player.SCSendChatMsg{})
+	if err != nil {
+		return
+	}
+
+	response := &network.Message{
+		Id:   uint64(messageId.MessageId_SCSendChatMsg),
+		Data: bytes,
+	}
+
+	p.session.SendMsg(response)
 }
 
 /*
@@ -42,7 +54,21 @@ func (p *Player) DelFriend(packet *network.Message) {
 	if err != nil {
 		return
 	}
+	//删除玩家的好友
 	p.FriendList = sugar.DelOneInSlice(request.UId, p.FriendList)
+
+	//生成返回包
+	bytes, err := proto.Marshal(&player.SCDelFriend{})
+	if err != nil {
+		return
+	}
+
+	response := &network.Message{
+		Id:   uint64(messageId.MessageId_SCDelFriend),
+		Data: bytes,
+	}
+
+	p.session.SendMsg(response)
 }
 
 /*
@@ -61,4 +87,15 @@ func (p *Player) ResolveChatMsg(packet *network.Message) {
 	//打印聊天内容
 	fmt.Println(request.Msg.Content)
 	//收到消息，然后转发给客户端
+	bytes, err := proto.Marshal(&player.SCSendChatMsg{})
+	if err != nil {
+		return
+	}
+
+	response := &network.Message{
+		Id:   uint64(messageId.MessageId_SCSendChatMsg),
+		Data: bytes,
+	}
+
+	p.session.SendMsg(response)
 }

@@ -23,16 +23,19 @@ func NewManagerHost() *ManagerHost {
 	}
 	m.Server = network.NewServer(":8023")
 	m.Server.OnSessionPacket = m.OnSessionPacket
+	m.Handlers = make(map[messageId.MessageId]func(message *network.SessionPacket))
 	return m
 }
 
 var MM *ManagerHost
 
 func (m *ManagerHost) Run() {
+	//注册组管理器处理器
+	m.HandlerRegister()
 	//启动服务器
 	go m.Server.Run()
 	//启动玩家管理器
-	go m.Pm.Run()
+	//go m.Pm.Run()
 }
 
 /*
@@ -42,9 +45,11 @@ OnSessionPacket
 @param packet
 */
 func (m *ManagerHost) OnSessionPacket(packet *network.SessionPacket) {
-	//根据网络包id获得对应的处理方法
+	//如果是组管理器处理的网络包，那么处理，否则发送给其他管理器，
 	if handler, ok := m.Handlers[messageId.MessageId(packet.Msg.Id)]; ok {
+		//根据网络包id获得对应的处理方法
 		handler(packet)
+		return
 	}
 
 	//将网络包发送给个人玩家

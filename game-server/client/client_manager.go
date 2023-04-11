@@ -5,7 +5,7 @@ import (
 	"lingmu/game-server/network/protocol/gen/messageId"
 )
 
-type Client struct {
+type ClientManager struct {
 	cli             *network.Client                        //客户端应用
 	inputHandlers   map[string]InputHandler                //请求处理器集合
 	messageHandlers map[messageId.MessageId]MessageHandler //消息处理器集合
@@ -18,8 +18,8 @@ NewClient
 @Description: 构造客户端对象，默认连接服务器的8023端口
 @return *Client
 */
-func NewClient() *Client {
-	c := &Client{
+func NewClient() *ClientManager {
+	c := &ClientManager{
 		cli:             network.NewClient(":8023"),
 		inputHandlers:   map[string]InputHandler{},
 		messageHandlers: map[messageId.MessageId]MessageHandler{},
@@ -38,7 +38,7 @@ Run
 @Description: 启动客户端所有协程
 @receiver c
 */
-func (c *Client) Run() {
+func (c *ClientManager) Run() {
 	//启动协程，不断的读取控制台发送过来的信息，解析后交给客户端协程去发送
 	go func() {
 		for {
@@ -63,7 +63,7 @@ func (c *Client) Run() {
 	go c.cli.Run()
 }
 
-func (c *Client) OnMessage(packet *network.ClientPacket) {
+func (c *ClientManager) OnMessage(packet *network.ClientPacket) {
 	//把uint64转换为int32
 	if handler, ok := c.messageHandlers[messageId.MessageId(packet.Msg.Id)]; ok {
 		handler(packet)

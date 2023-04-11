@@ -21,7 +21,7 @@ func NewSession(conn net.Conn) *Session {
 	return &Session{
 		Conn:    conn,
 		packer:  NewNormalPacker(binary.BigEndian), //采用大端方式去解析
-		WriteCh: make(chan *Message, 1),            //新建一个Message管道，一次只能进行单个Message的写回
+		WriteCh: make(chan *Message, 10),           //新建一个Message管道，一次能进行10个Message的写回
 	}
 }
 
@@ -62,10 +62,10 @@ func (s *Session) Read() {
 		})
 
 		//处理完后写回
-		s.WriteCh <- &Message{
-			Id:   555,
-			Data: []byte("服务端成功获取网络包"),
-		}
+		//s.WriteCh <- &Message{
+		//	Id:   555,
+		//	Data: []byte("服务端成功获取网络包"),
+		//}
 	}
 
 }

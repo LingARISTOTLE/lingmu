@@ -19,7 +19,7 @@ CreatePlayer
 @receiver c
 @param param
 */
-func (c *Client) CreatePlayer(param *InputParam) {
+func (c *ClientManager) CreatePlayer(param *InputParam) {
 	//通过命令获取对应处理方法id
 	id := c.GetMessageIdByCmd(param.Command)
 
@@ -42,7 +42,7 @@ OnCreatePlayerRsp
 @receiver c
 @param packet
 */
-func (c *Client) OnCreatePlayerRsp(packet *network.ClientPacket) {
+func (c *ClientManager) OnCreatePlayerRsp(packet *network.ClientPacket) {
 	fmt.Println("角色创建成功")
 }
 
@@ -52,7 +52,7 @@ Login
 @receiver c
 @param param
 */
-func (c *Client) Login(param *InputParam) {
+func (c *ClientManager) Login(param *InputParam) {
 	id := c.GetMessageIdByCmd(param.Command)
 	if len(param.Param) != 2 {
 		return
@@ -72,7 +72,7 @@ OnLoginRsp
 @receiver c
 @param packet
 */
-func (c *Client) OnLoginRsp(packet *network.ClientPacket) {
+func (c *ClientManager) OnLoginRsp(packet *network.ClientPacket) {
 	//写回包暂且为nil
 	rsp := &player.SCLogin{}
 
@@ -90,7 +90,7 @@ AddFriend
 @receiver c
 @param param
 */
-func (c *Client) AddFriend(param *InputParam) {
+func (c *ClientManager) AddFriend(param *InputParam) {
 	//获取请求处理方法类型id
 	id := c.GetMessageIdByCmd(param.Command)
 
@@ -116,7 +116,7 @@ OnAddFriendRsp
 @receiver c
 @param packet
 */
-func (c *Client) OnAddFriendRsp(packet *network.ClientPacket) {
+func (c *ClientManager) OnAddFriendRsp(packet *network.ClientPacket) {
 
 }
 
@@ -126,7 +126,7 @@ DelFriend
 @receiver c
 @param param
 */
-func (c *Client) DelFriend(param *InputParam) {
+func (c *ClientManager) DelFriend(param *InputParam) {
 	//获取请求类型
 	id := c.GetMessageIdByCmd(param.Command)
 
@@ -151,7 +151,7 @@ OnDelFriendRsp
 @receiver c
 @param param
 */
-func (c *Client) OnDelFriendRsp(packet *network.ClientPacket) {
+func (c *ClientManager) OnDelFriendRsp(packet *network.ClientPacket) {
 	fmt.Println("删除成功")
 }
 
@@ -161,7 +161,7 @@ SendChatMsg
 @receiver c
 @param param
 */
-func (c *Client) SendChatMsg(param *InputParam) {
+func (c *ClientManager) SendChatMsg(param *InputParam) {
 	//获取消息类型
 	id := c.GetMessageIdByCmd(param.Command)
 
@@ -199,6 +199,6 @@ OnSendChatMsgRsp
 @Description: 发送信息写回
 @receiver c
 */
-func (c *Client) OnSendChatMsgRsp(packet *network.ClientPacket) {
+func (c *ClientManager) OnSendChatMsgRsp(packet *network.ClientPacket) {
 	fmt.Println("发送消息成功")
 }

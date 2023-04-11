@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/golang/protobuf/proto"
 	"lingmu/game-server/network"
+	"lingmu/game-server/network/protocol/gen/messageId"
 	"lingmu/game-server/network/protocol/gen/player"
 	userPlayer "lingmu/game-server/player"
 	"time"
@@ -23,7 +24,7 @@ func (m *ManagerHost) CreatePlayer(message *network.SessionPacket) {
 		return
 	}
 	fmt.Println("创建玩家", msg)
-	m.SendMsg(message.Msg.Id, &player.SCCreateUser{}, message.Sess)
+	m.SendMsg(uint64(messageId.MessageId_SCCreatePlayer), &player.SCCreateUser{}, message.Sess)
 }
 
 /*

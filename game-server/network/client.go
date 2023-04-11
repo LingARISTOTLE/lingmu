@@ -60,18 +60,18 @@ func (c *Client) Write(conn net.Conn) {
 func (c *Client) send(conn net.Conn, message *Message) {
 	err := conn.SetWriteDeadline(time.Now().Add(time.Second))
 	if err != nil {
-		fmt.Println(err)
+		//fmt.Println(err)
 		return
 	}
 	bytes, err := c.packer.Pack(message)
 	if err != nil {
-		fmt.Println(err)
+		//fmt.Println(err)
 		return
 	}
 
 	_, err = conn.Write(bytes)
 	if err != nil {
-		fmt.Println(err)
+		//fmt.Println(err)
 		return
 	}
 }

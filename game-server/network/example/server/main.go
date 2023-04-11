@@ -6,6 +6,6 @@ import (
 
 func main() {
 	server := network.NewServer(":8023")
-	server.Run()
+	go server.Run()
 	select {}
 }

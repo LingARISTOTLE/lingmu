@@ -11,7 +11,7 @@ InputHandlerRegister
 @Description: 注册用户对应请求处理器方法
 @receiver c
 */
-func (c *Client) InputHandlerRegister() {
+func (c *ClientManager) InputHandlerRegister() {
 	c.inputHandlers[messageId.MessageId_CSLogin.String()] = c.Login
 	c.inputHandlers[messageId.MessageId_CSAddFriend.String()] = c.AddFriend
 	c.inputHandlers[messageId.MessageId_CSDelFriend.String()] = c.DelFriend
@@ -25,7 +25,7 @@ GetMessageIdByCmd
 @param cmd
 @return messageId.MessageId
 */
-func (c *Client) GetMessageIdByCmd(cmd string) messageId.MessageId {
+func (c *ClientManager) GetMessageIdByCmd(cmd string) messageId.MessageId {
 	mid, ok := messageId.MessageId_value[cmd]
 	if ok {
 		return messageId.MessageId(mid)
@@ -40,7 +40,7 @@ Transport
 @param id
 @param message
 */
-func (c *Client) Transport(id messageId.MessageId, message proto.Message) {
+func (c *ClientManager) Transport(id messageId.MessageId, message proto.Message) {
 	//获取message的有限格式wire-format编码
 	bytes, err := proto.Marshal(message)
 	if err != nil {

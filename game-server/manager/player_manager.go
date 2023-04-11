@@ -11,6 +11,13 @@ type PlayManager struct {
 	addPCh  chan *player.Player       //添加玩家管道
 }
 
+func NewPlayManager() *PlayManager {
+	return &PlayManager{
+		players: make(map[uint64]*player.Player),
+		addPCh:  make(chan *player.Player, 1), //1缓冲队列，一次只能发送一个用户上线信息
+	}
+}
+
 /*
 Add
 @Description:新增在线玩家

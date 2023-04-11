@@ -7,7 +7,7 @@ MessageHandlerRegister
 @Description: 注册消息处理器
 @receiver c
 */
-func (c *Client) MessageHandlerRegister() {
+func (c *ClientManager) MessageHandlerRegister() {
 	c.messageHandlers[messageId.MessageId_SCLogin] = c.OnLoginRsp
 	c.messageHandlers[messageId.MessageId_SCAddFriend] = c.OnAddFriendRsp
 	c.messageHandlers[messageId.MessageId_SCDelFriend] = c.OnDelFriendRsp
