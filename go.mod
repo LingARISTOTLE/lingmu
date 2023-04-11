@@ -3,6 +3,7 @@ module lingmu
 go 1.18
 
 require (
+	github.com/LingARISTOTLE/lingotools v0.0.0-20230411063822-a90d9917abd7 // indirect
 	github.com/Masterminds/goutils v1.1.1 // indirect
 	github.com/Masterminds/semver v1.5.0 // indirect
 	github.com/Masterminds/sprig v2.22.0+incompatible // indirect
@@ -22,6 +23,7 @@ require (
 	github.com/pseudomuto/protokit v0.2.1 // indirect
 	github.com/spf13/afero v1.9.5 // indirect
 	golang.org/x/crypto v0.8.0 // indirect
+	golang.org/x/exp v0.0.0-20220713135740-79cabaa25d75 // indirect
 	golang.org/x/lint v0.0.0-20210508222113-6edffad5e616 // indirect
 	golang.org/x/mod v0.10.0 // indirect
 	golang.org/x/net v0.9.0 // indirect

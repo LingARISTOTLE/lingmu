@@ -2,8 +2,8 @@ package player
 
 import (
 	"fmt"
+	sugar "github.com/LingARISTOTLE/lingotools"
 	"github.com/golang/protobuf/proto"
-	"lingmu/game-server/function"
 	"lingmu/game-server/network"
 	"lingmu/game-server/network/protocol/gen/player"
 )
@@ -24,7 +24,7 @@ func (p *Player) AddFriend(packet *network.SessionPacket) {
 		return
 	}
 	//判断好友集合中是否以及存在
-	if !function.CheckInNumberSlice(request.UId, p.FriendList) {
+	if !sugar.CheckInSlice(request.UId, p.FriendList) {
 		p.FriendList = append(p.FriendList, request.UId)
 	}
 
@@ -42,7 +42,7 @@ func (p *Player) DelFriend(packet *network.SessionPacket) {
 	if err != nil {
 		return
 	}
-	p.FriendList = function.DelEleInSlice(request.UId, p.FriendList)
+	p.FriendList = sugar.DelOneInSlice(request.UId, p.FriendList)
 }
 
 /*
