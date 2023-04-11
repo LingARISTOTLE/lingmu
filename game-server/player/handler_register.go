@@ -4,7 +4,7 @@ import "lingmu/game-server/network/protocol/gen/messageId"
 
 /*
 HandlerRegister
-@Description: 用来注册p的处理方法，到时候只需要输入字符串就能调用其方法
+@Description: 玩家处理器注册，用来注册玩家的业务处理方法，到时候只需要输入字符串就能调用其方法
 @receiver p
 */
 func (p *Player) HandlerRegister() {

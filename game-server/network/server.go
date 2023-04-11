@@ -1,6 +1,7 @@
 package network
 
 import (
+	"fmt"
 	"net"
 )
 
@@ -37,11 +38,17 @@ func NewServer(address string) *Server {
 	return s
 }
 
+/*
+Run
+@Description: 启动服务器
+@receiver s
+*/
 func (s *Server) Run() {
 
 	for {
 		//循环监听
 		conn, err := s.listener.Accept()
+		fmt.Println("获取连接")
 		if err != nil {
 			continue
 		}
@@ -50,6 +57,7 @@ func (s *Server) Run() {
 			//生成session
 			newSession := NewSession(conn)
 			SessionMgrInstance.AddSession(newSession)
+			//启动用户会话
 			newSession.Run()
 			SessionMgrInstance.DelSession(newSession.UId)
 		}()

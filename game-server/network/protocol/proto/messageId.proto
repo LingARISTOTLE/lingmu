@@ -11,10 +11,14 @@ enum MessageId{
   //CS: C-->S
   //SC: S-->C
 
+  //用户创建
+  CSCreatePlayer = 50001;
+  SCCreatePlayer = 50002;
+
   //客户端登录请求
-  CSLogin = 50001;
+  CSLogin = 50003;
   //服务器响应登录请求
-  SCLogin = 50002;
+  SCLogin = 50004;
 
   //player
   //添加好友

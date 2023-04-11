@@ -4,8 +4,21 @@ package player;
 
 option go_package = "/player";
 
+//创建用户包
+message CSCreateUser{
+  string Username = 1;
+  string Password = 2;
+}
+
+message SCCreateUser{
+
+}
+
+//用户登录
 message CSLogin{
-  uint64 UId = 1;//玩家Id
+  //  uint64 UId = 1;//玩家Id
+  string UserName = 1;
+  string Password = 2;
 }
 
 message SCLogin{

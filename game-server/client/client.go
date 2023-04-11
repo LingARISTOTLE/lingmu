@@ -1,17 +1,16 @@
 package main
 
 import (
-	"fmt"
 	"lingmu/game-server/network"
 	"lingmu/game-server/network/protocol/gen/messageId"
 )
 
 type Client struct {
-	cli             *network.Client
-	inputHandlers   map[string]InputHandler
-	messageHandlers map[messageId.MessageId]MessageHandler
-	console         *ClientConsole
-	chInput         chan *InputParam
+	cli             *network.Client                        //客户端应用
+	inputHandlers   map[string]InputHandler                //请求处理器集合
+	messageHandlers map[messageId.MessageId]MessageHandler //消息处理器集合
+	console         *ClientConsole                         //控制台
+	chInput         chan *InputParam                       //客户端请求命令
 }
 
 /*
@@ -40,12 +39,12 @@ Run
 @receiver c
 */
 func (c *Client) Run() {
-	//启动协程，不断的读取控制台发送过来的信息，解析后交给发送协程去发送
+	//启动协程，不断的读取控制台发送过来的信息，解析后交给客户端协程去发送
 	go func() {
 		for {
 			select {
 			case input := <-c.chInput:
-				fmt.Printf("cmd:%s,param:%v  <<<\t \n", input.Command, input.Param)
+				//fmt.Printf("cmd:%s,param:%v  <<<\t \n", input.Command, input.Param)
 				inputHandler := c.inputHandlers[input.Command]
 				if inputHandler != nil {
 					inputHandler(input)
@@ -58,9 +57,9 @@ func (c *Client) Run() {
 			}
 		}
 	}()
-	//启动控制台协程
+	//启动控制台协程，负责获取用户输入信息，并传递给包装协程
 	go c.console.Run()
-	//启动客户端服务
+	//启动客户端服务，负责收发网络包
 	go c.cli.Run()
 }
 

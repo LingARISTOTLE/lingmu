@@ -8,12 +8,12 @@ import (
 )
 
 type Session struct {
-	UId            int64               //连接序号
-	Conn           net.Conn            //连接
-	IsClose        bool                //连接是否关闭
-	packer         *NormalPacker       //打包方式
-	WriteCh        chan *SessionPacket //用于写回的通道，当处理完请求后会生成响应包放在chWrite管道
-	IsPlayerOnline bool                //用户是否在线
+	UId            uint64        //连接序号
+	Conn           net.Conn      //连接
+	IsClose        bool          //连接是否关闭
+	packer         *NormalPacker //打包方式
+	WriteCh        chan *Message //用于写回的通道，当处理完请求后会生成响应包放在chWrite管道
+	IsPlayerOnline bool          //玩家是否在线
 	MessageHandler func(packet *SessionPacket)
 }
 
@@ -21,7 +21,7 @@ func NewSession(conn net.Conn) *Session {
 	return &Session{
 		Conn:    conn,
 		packer:  NewNormalPacker(binary.BigEndian), //采用大端方式去解析
-		WriteCh: make(chan *SessionPacket, 1),      //新建一个Message管道，一次只能进行单个Message的写回
+		WriteCh: make(chan *Message, 1),            //新建一个Message管道，一次只能进行单个Message的写回
 	}
 }
 
@@ -62,34 +62,33 @@ func (s *Session) Read() {
 		})
 
 		//处理完后写回
-		s.WriteCh <- &SessionPacket{
-			Msg: &Message{
-				Id:   555,
-				Data: []byte("hi"),
-			},
-			Sess: s,
+		s.WriteCh <- &Message{
+			Id:   555,
+			Data: []byte("服务端成功获取网络包"),
 		}
 	}
 
 }
 
 func (s *Session) Write() {
-	//设置超时时间
-	err := s.Conn.SetWriteDeadline(time.Now().Add(time.Second))
-	if err != nil {
-		fmt.Println(err)
-	}
 
 	for {
 		select {
 		case message := <-s.WriteCh: //SessionPacket，那么发送
-			s.send(message.Msg)
+			s.send(message)
 		}
 	}
 
 }
 
+/*
+send
+@Description: 发送消息
+@receiver s
+@param message
+*/
 func (s *Session) send(message *Message) {
+	//设置网络包发送超时事件
 	err := s.Conn.SetWriteDeadline(time.Now().Add(time.Second))
 	if err != nil {
 		fmt.Println(err)
@@ -102,8 +101,21 @@ func (s *Session) send(message *Message) {
 		return
 	}
 
-	_, err = s.Conn.Write(bytes)
-	if err != nil {
-		fmt.Println(err)
-	}
+	s.Conn.Write(bytes)
 }
+
+/*
+SendMsg
+@Description: 发送消息到写回队列
+@receiver s
+@param message
+*/
+func (s *Session) SendMsg(message *Message) {
+	s.WriteCh <- message
+}
+
+//设置超时时间
+//err := s.Conn.SetWriteDeadline(time.Now().Add(time.Second))
+//if err != nil {
+//	fmt.Println(err)
+//}

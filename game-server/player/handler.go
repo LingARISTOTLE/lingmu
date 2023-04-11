@@ -9,7 +9,7 @@ import (
 )
 
 // Handler 定义方法枚举类型，只要参数是packet *network.SessionPacket无返回值的方法都是player.Handler
-type Handler func(packet *network.SessionPacket)
+type Handler func(packet *network.Message)
 
 /*
 AddFriend
@@ -17,9 +17,9 @@ AddFriend
 @receiver p：当前对象
 @param fId：好友id
 */
-func (p *Player) AddFriend(packet *network.SessionPacket) {
+func (p *Player) AddFriend(packet *network.Message) {
 	request := &player.CSAddFriend{}
-	err := proto.Unmarshal(packet.Msg.Data, request)
+	err := proto.Unmarshal(packet.Data, request)
 	if err != nil {
 		return
 	}
@@ -36,9 +36,9 @@ DelFriend
 @receiver p：当前对象
 @param fId：好友id
 */
-func (p *Player) DelFriend(packet *network.SessionPacket) {
+func (p *Player) DelFriend(packet *network.Message) {
 	request := &player.CSDelFriend{}
-	err := proto.Unmarshal(packet.Msg.Data, request)
+	err := proto.Unmarshal(packet.Data, request)
 	if err != nil {
 		return
 	}
@@ -51,10 +51,10 @@ ResolveChatMsg
 @receiver p
 @param data
 */
-func (p *Player) ResolveChatMsg(packet *network.SessionPacket) {
+func (p *Player) ResolveChatMsg(packet *network.Message) {
 	//解析聊天包
 	request := &player.CSSendChatMsg{}
-	err := proto.Unmarshal(packet.Msg.Data, request)
+	err := proto.Unmarshal(packet.Data, request)
 	if err != nil {
 		return
 	}

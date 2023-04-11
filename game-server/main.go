@@ -6,7 +6,7 @@ func main() {
 
 	//创建管理器组管理器
 	world.MM = world.NewManagerHost()
-	//启动用户管理器
+	//启动组管理器
 	world.MM.Run()
 
 }

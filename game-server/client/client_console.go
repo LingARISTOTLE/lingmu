@@ -8,7 +8,7 @@ import (
 )
 
 type ClientConsole struct {
-	chInput chan *InputParam
+	chInput chan *InputParam //用户输入命令
 }
 
 /*

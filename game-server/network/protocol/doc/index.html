@@ -198,6 +198,10 @@
                 </li>
               
                 <li>
+                  <a href="#player.CSCreateUser"><span class="badge">M</span>CSCreateUser</a>
+                </li>
+              
+                <li>
                   <a href="#player.CSDelFriend"><span class="badge">M</span>CSDelFriend</a>
                 </li>
               
@@ -215,6 +219,10 @@
               
                 <li>
                   <a href="#player.SCAddFriend"><span class="badge">M</span>SCAddFriend</a>
+                </li>
+              
+                <li>
+                  <a href="#player.SCCreateUser"><span class="badge">M</span>SCCreateUser</a>
                 </li>
               
                 <li>
@@ -265,14 +273,26 @@ SC: S--&gt;C</p></td>
               </tr>
             
               <tr>
-                <td>CSLogin</td>
+                <td>CSCreatePlayer</td>
                 <td>50001</td>
+                <td><p>用户创建</p></td>
+              </tr>
+            
+              <tr>
+                <td>SCCreatePlayer</td>
+                <td>50002</td>
+                <td><p></p></td>
+              </tr>
+            
+              <tr>
+                <td>CSLogin</td>
+                <td>50003</td>
                 <td><p>客户端登录请求</p></td>
               </tr>
             
               <tr>
                 <td>SCLogin</td>
-                <td>50002</td>
+                <td>50004</td>
                 <td><p>服务器响应登录请求</p></td>
               </tr>
             
@@ -352,6 +372,37 @@ SC: S--&gt;C</p></td>
 
         
       
+        <h3 id="player.CSCreateUser">CSCreateUser</h3>
+        <p>创建用户包</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>Username</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Password</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
         <h3 id="player.CSDelFriend">CSDelFriend</h3>
         <p></p>
 
@@ -377,7 +428,7 @@ SC: S--&gt;C</p></td>
         
       
         <h3 id="player.CSLogin">CSLogin</h3>
-        <p></p>
+        <p>用户登录</p>
 
         
           <table class="field-table">
@@ -387,10 +438,17 @@ SC: S--&gt;C</p></td>
             <tbody>
               
                 <tr>
-                  <td>UId</td>
-                  <td><a href="#uint64">uint64</a></td>
+                  <td>UserName</td>
+                  <td><a href="#string">string</a></td>
                   <td></td>
-                  <td><p>玩家Id </p></td>
+                  <td><p>uint64 UId = 1;//玩家Id </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Password</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
                 </tr>
               
             </tbody>
@@ -421,7 +479,14 @@ SC: S--&gt;C</p></td>
                   <td>msg</td>
                   <td><a href="#player.ChatMessage">ChatMessage</a></td>
                   <td></td>
-                  <td><p>私信消息 </p></td>
+                  <td><p>消息本体 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>Category</td>
+                  <td><a href="#int32">int32</a></td>
+                  <td></td>
+                  <td><p>聊天类型 </p></td>
                 </tr>
               
             </tbody>
@@ -483,6 +548,13 @@ SC: S--&gt;C</p></td>
           </table>
 
           
+
+        
+      
+        <h3 id="player.SCCreateUser">SCCreateUser</h3>
+        <p></p>
+
+        
 
         
       

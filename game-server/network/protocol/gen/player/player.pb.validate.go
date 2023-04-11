@@ -35,6 +35,208 @@ var (
 	_ = sort.Sort
 )
 
+// Validate checks the field values on CSCreateUser with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *CSCreateUser) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on CSCreateUser with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in CSCreateUserMultiError, or
+// nil if none found.
+func (m *CSCreateUser) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *CSCreateUser) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	// no validation rules for Username
+
+	// no validation rules for Password
+
+	if len(errors) > 0 {
+		return CSCreateUserMultiError(errors)
+	}
+
+	return nil
+}
+
+// CSCreateUserMultiError is an error wrapping multiple validation errors
+// returned by CSCreateUser.ValidateAll() if the designated constraints aren't met.
+type CSCreateUserMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m CSCreateUserMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m CSCreateUserMultiError) AllErrors() []error { return m }
+
+// CSCreateUserValidationError is the validation error returned by
+// CSCreateUser.Validate if the designated constraints aren't met.
+type CSCreateUserValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e CSCreateUserValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e CSCreateUserValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e CSCreateUserValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e CSCreateUserValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e CSCreateUserValidationError) ErrorName() string { return "CSCreateUserValidationError" }
+
+// Error satisfies the builtin error interface
+func (e CSCreateUserValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sCSCreateUser.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = CSCreateUserValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = CSCreateUserValidationError{}
+
+// Validate checks the field values on SCCreateUser with the rules defined in
+// the proto definition for this message. If any rules are violated, the first
+// error encountered is returned, or nil if there are no violations.
+func (m *SCCreateUser) Validate() error {
+	return m.validate(false)
+}
+
+// ValidateAll checks the field values on SCCreateUser with the rules defined
+// in the proto definition for this message. If any rules are violated, the
+// result is a list of violation errors wrapped in SCCreateUserMultiError, or
+// nil if none found.
+func (m *SCCreateUser) ValidateAll() error {
+	return m.validate(true)
+}
+
+func (m *SCCreateUser) validate(all bool) error {
+	if m == nil {
+		return nil
+	}
+
+	var errors []error
+
+	if len(errors) > 0 {
+		return SCCreateUserMultiError(errors)
+	}
+
+	return nil
+}
+
+// SCCreateUserMultiError is an error wrapping multiple validation errors
+// returned by SCCreateUser.ValidateAll() if the designated constraints aren't met.
+type SCCreateUserMultiError []error
+
+// Error returns a concatenation of all the error messages it wraps.
+func (m SCCreateUserMultiError) Error() string {
+	var msgs []string
+	for _, err := range m {
+		msgs = append(msgs, err.Error())
+	}
+	return strings.Join(msgs, "; ")
+}
+
+// AllErrors returns a list of validation violation errors.
+func (m SCCreateUserMultiError) AllErrors() []error { return m }
+
+// SCCreateUserValidationError is the validation error returned by
+// SCCreateUser.Validate if the designated constraints aren't met.
+type SCCreateUserValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e SCCreateUserValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e SCCreateUserValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e SCCreateUserValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e SCCreateUserValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e SCCreateUserValidationError) ErrorName() string { return "SCCreateUserValidationError" }
+
+// Error satisfies the builtin error interface
+func (e SCCreateUserValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sSCCreateUser.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = SCCreateUserValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = SCCreateUserValidationError{}
+
 // Validate checks the field values on CSLogin with the rules defined in the
 // proto definition for this message. If any rules are violated, the first
 // error encountered is returned, or nil if there are no violations.
@@ -56,7 +258,9 @@ func (m *CSLogin) validate(all bool) error {
 
 	var errors []error
 
-	// no validation rules for UId
+	// no validation rules for UserName
+
+	// no validation rules for Password
 
 	if len(errors) > 0 {
 		return CSLoginMultiError(errors)
@@ -691,6 +895,8 @@ func (m *CSSendChatMsg) validate(all bool) error {
 			}
 		}
 	}
+
+	// no validation rules for Category
 
 	if len(errors) > 0 {
 		return CSSendChatMsgMultiError(errors)
