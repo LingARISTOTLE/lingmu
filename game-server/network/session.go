@@ -8,12 +8,12 @@ import (
 )
 
 type Session struct {
-	UId            int64         //连接序号
-	Conn           net.Conn      //连接
-	IsClose        bool          //连接是否关闭
-	packer         *NormalPacker //打包方式
-	WriteCh        chan *Message //用于写回的通道，当处理完请求后会生成响应包放在chWrite管道
-	IsPlayerOnline bool          //用户是否在线
+	UId            int64               //连接序号
+	Conn           net.Conn            //连接
+	IsClose        bool                //连接是否关闭
+	packer         *NormalPacker       //打包方式
+	WriteCh        chan *SessionPacket //用于写回的通道，当处理完请求后会生成响应包放在chWrite管道
+	IsPlayerOnline bool                //用户是否在线
 	MessageHandler func(packet *SessionPacket)
 }
 
@@ -21,7 +21,7 @@ func NewSession(conn net.Conn) *Session {
 	return &Session{
 		Conn:    conn,
 		packer:  NewNormalPacker(binary.BigEndian), //采用大端方式去解析
-		WriteCh: make(chan *Message, 1),            //新建一个Message管道，一次只能进行单个Message的写回
+		WriteCh: make(chan *SessionPacket, 1),      //新建一个Message管道，一次只能进行单个Message的写回
 	}
 }
 
@@ -62,9 +62,12 @@ func (s *Session) Read() {
 		})
 
 		//处理完后写回
-		s.WriteCh <- &Message{
-			Id:   999,
-			Data: []byte("connection success!"),
+		s.WriteCh <- &SessionPacket{
+			Msg: &Message{
+				Id:   555,
+				Data: []byte("hi"),
+			},
+			Sess: s,
 		}
 	}
 
@@ -79,8 +82,8 @@ func (s *Session) Write() {
 
 	for {
 		select {
-		case message := <-s.WriteCh: //如果管道中有message，那么发送
-			s.send(message)
+		case message := <-s.WriteCh: //SessionPacket，那么发送
+			s.send(message.Msg)
 		}
 	}
 

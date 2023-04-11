@@ -39,18 +39,18 @@ func (c *Client) Run() {
 
 func (c *Client) Write(conn net.Conn) {
 	//每秒生成一个chan Time到ticker中
-	ticker := time.NewTicker(time.Second)
+	//ticker := time.NewTicker(time.Second)
 
 	for {
 		select {
 		//每次发生事件：这里是测试，每秒读取一次定时器事件
-		case <-ticker.C:
-			c.send(conn, &Message{
-				Id:   111,
-				Data: []byte("hello,world"),
-			})
+		//case <-ticker.C:
+		//	c.send(conn, &Message{
+		//		Id:   111,
+		//		Data: []byte("hello,world"),
+		//	})
 
-		case msg := <-c.ChMsg:
+		case msg := <-c.ChMsg: //当控制台输入消息，那么发送
 			c.send(conn, msg)
 		}
 

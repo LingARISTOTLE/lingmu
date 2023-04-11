@@ -30,9 +30,9 @@ message SCDelFriend{
 }
 
 message CSSendChatMsg{
-
   uint64  UId = 1;//玩家Id
-  ChatMessage msg = 2;//私信消息
+  ChatMessage msg = 2;//消息本体
+  int32 Category = 3;//聊天类型
 }
 
 message SCSendChatMsg{

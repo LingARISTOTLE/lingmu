@@ -2,12 +2,14 @@ package player
 
 import (
 	"fmt"
-	"lingmu/game-server/chat"
+	"github.com/golang/protobuf/proto"
 	"lingmu/game-server/function"
+	"lingmu/game-server/network"
+	"lingmu/game-server/network/protocol/gen/player"
 )
 
-// Handler 定义方法枚举类型，只要参数是interface{}无返回值的方法都是player.Handler
-type Handler func(interface{})
+// Handler 定义方法枚举类型，只要参数是packet *network.SessionPacket无返回值的方法都是player.Handler
+type Handler func(packet *network.SessionPacket)
 
 /*
 AddFriend
@@ -15,11 +17,17 @@ AddFriend
 @receiver p：当前对象
 @param fId：好友id
 */
-func (p *Player) AddFriend(data interface{}) {
-	fId := data.(uint64)
-	if !function.CheckInNumberSlice(fId, p.FriendList) {
-		p.FriendList = append(p.FriendList, fId)
+func (p *Player) AddFriend(packet *network.SessionPacket) {
+	request := &player.CSAddFriend{}
+	err := proto.Unmarshal(packet.Msg.Data, request)
+	if err != nil {
+		return
 	}
+	//判断好友集合中是否以及存在
+	if !function.CheckInNumberSlice(request.UId, p.FriendList) {
+		p.FriendList = append(p.FriendList, request.UId)
+	}
+
 }
 
 /*
@@ -28,9 +36,13 @@ DelFriend
 @receiver p：当前对象
 @param fId：好友id
 */
-func (p *Player) DelFriend(data interface{}) {
-	fId := data.(uint64)
-	p.FriendList = function.DelEleInSlice(fId, p.FriendList)
+func (p *Player) DelFriend(packet *network.SessionPacket) {
+	request := &player.CSDelFriend{}
+	err := proto.Unmarshal(packet.Msg.Data, request)
+	if err != nil {
+		return
+	}
+	p.FriendList = function.DelEleInSlice(request.UId, p.FriendList)
 }
 
 /*
@@ -39,8 +51,14 @@ ResolveChatMsg
 @receiver p
 @param data
 */
-func (p *Player) ResolveChatMsg(data interface{}) {
-	chatMsg := data.(chat.Message)
-	fmt.Println(chatMsg)
+func (p *Player) ResolveChatMsg(packet *network.SessionPacket) {
+	//解析聊天包
+	request := &player.CSSendChatMsg{}
+	err := proto.Unmarshal(packet.Msg.Data, request)
+	if err != nil {
+		return
+	}
+	//打印聊天内容
+	fmt.Println(request.Msg.Content)
 	//收到消息，然后转发给客户端
 }

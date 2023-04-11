@@ -1,6 +1,9 @@
 package main
 
-import "lingmu/game-server/network"
+import (
+	"fmt"
+	"lingmu/game-server/network"
+)
 
 type MessageHandler func(packet *network.ClientPacket)
 
@@ -13,7 +16,9 @@ Login
 @param param
 */
 func (c *Client) Login(param *InputParam) {
-
+	fmt.Printf("Login input Handler print")
+	fmt.Println(param.Command)
+	fmt.Println(param.Param)
 }
 
 /*

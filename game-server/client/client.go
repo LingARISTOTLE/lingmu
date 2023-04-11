@@ -1,15 +1,15 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"lingmu/game-server/network"
+	"lingmu/game-server/network/protocol/gen/messageId"
 )
 
 type Client struct {
 	cli             *network.Client
 	inputHandlers   map[string]InputHandler
-	messageHandlers map[uint64]MessageHandler
+	messageHandlers map[messageId.MessageId]MessageHandler
 	console         *ClientConsole
 	chInput         chan *InputParam
 }
@@ -23,7 +23,7 @@ func NewClient() *Client {
 	c := &Client{
 		cli:             network.NewClient(":8023"),
 		inputHandlers:   map[string]InputHandler{},
-		messageHandlers: map[uint64]MessageHandler{},
+		messageHandlers: map[messageId.MessageId]MessageHandler{},
 		console:         NewClientConsole(),
 	}
 
@@ -46,12 +46,14 @@ func (c *Client) Run() {
 			select {
 			case input := <-c.chInput:
 				fmt.Printf("cmd:%s,param:%v  <<<\t \n", input.Command, input.Param)
-				bytes, err := json.Marshal(input.Param)
-				if err == nil {
-					c.cli.ChMsg <- &network.Message{
-						Id:   1,
-						Data: bytes,
-					}
+				inputHandler := c.inputHandlers[input.Command]
+				if inputHandler != nil {
+					inputHandler(input)
+				}
+				//发送消息
+				c.cli.ChMsg <- &network.Message{
+					Id:   uint64(messageId.MessageId_CSAddFriend),
+					Data: []byte(input.Command),
 				}
 			}
 		}
@@ -63,7 +65,8 @@ func (c *Client) Run() {
 }
 
 func (c *Client) OnMessage(packet *network.ClientPacket) {
-	if handler, ok := c.messageHandlers[packet.Msg.Id]; ok {
+	//把uint64转换为int32
+	if handler, ok := c.messageHandlers[messageId.MessageId(packet.Msg.Id)]; ok {
 		handler(packet)
 	}
 }
