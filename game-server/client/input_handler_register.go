@@ -41,7 +41,7 @@ Transport
 @param message
 */
 func (c *ClientManager) Transport(id messageId.MessageId, message proto.Message) {
-	//获取message的有限格式wire-format编码
+	//序列化
 	bytes, err := proto.Marshal(message)
 	if err != nil {
 		return
