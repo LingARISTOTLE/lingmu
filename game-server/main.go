@@ -1,6 +1,10 @@
 package main
 
-import "lingmu/game-server/world"
+import (
+	"fmt"
+	sugar "github.com/LingARISTOTLE/lingotools"
+	"lingmu/game-server/world"
+)
 
 func main() {
 
@@ -8,5 +12,8 @@ func main() {
 	world.MM = world.NewManagerHost()
 	//启动组管理器
 	world.MM.Run()
+	fmt.Println("服务启动")
+
+	sugar.WaitSignal(world.MM.OnSystemSignal)
 
 }

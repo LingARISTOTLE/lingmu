@@ -1,9 +1,12 @@
 package world
 
 import (
+	"fmt"
 	"lingmu/game-server/manager"
 	"lingmu/game-server/network"
 	"lingmu/game-server/network/protocol/gen/messageId"
+	"os"
+	"syscall"
 )
 
 /*
@@ -56,4 +59,20 @@ func (m *ManagerHost) OnSessionPacket(packet *network.SessionPacket) {
 	if p := m.Pm.GetPlayer(packet.Sess.UId); p != nil {
 		p.HandlerParamCh <- packet.Msg
 	}
+}
+
+func (m *ManagerHost) OnSystemSignal(signal os.Signal) bool {
+	fmt.Println("接收信号")
+	tag := true
+
+	switch signal {
+	case syscall.SIGHUP:
+	case syscall.SIGPIPE:
+	default:
+		fmt.Println("等待接收其他信号")
+		tag = false
+	}
+
+	return tag
+
 }

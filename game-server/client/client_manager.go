@@ -1,8 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"lingmu/game-server/network"
 	"lingmu/game-server/network/protocol/gen/messageId"
+	"os"
+	"syscall"
 )
 
 type ClientManager struct {
@@ -68,4 +71,24 @@ func (c *ClientManager) OnMessage(packet *network.ClientPacket) {
 	if handler, ok := c.messageHandlers[messageId.MessageId(packet.Msg.Id)]; ok {
 		handler(packet)
 	}
+}
+
+/*
+OnSystemSignal
+@Description: 接收操作系统信号，判断是否需要继续阻塞
+@receiver c
+@param signal
+@return bool
+*/
+func (c *ClientManager) OnSystemSignal(signal os.Signal) bool {
+	fmt.Println("客户端接收到信号 %v", signal)
+	tag := true
+	switch signal {
+	case syscall.SIGHUP:
+	case syscall.SIGPIPE:
+	default:
+		fmt.Println("退出信号")
+		tag = false
+	}
+	return tag
 }
