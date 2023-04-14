@@ -2,7 +2,7 @@ package world
 
 import (
 	"fmt"
-	"lingmu/game-server/manager"
+	"lingmu/game-server/business/manager"
 	"lingmu/game-server/network"
 	"lingmu/game-server/network/protocol/gen/messageId"
 	"os"

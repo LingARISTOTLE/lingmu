@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	sugar "github.com/LingARISTOTLE/lingotools"
-	"lingmu/game-server/world"
+	"lingmu/game-server/business/world"
 )
 
 func main() {
