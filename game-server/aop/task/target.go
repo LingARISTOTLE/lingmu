@@ -13,7 +13,7 @@ type Target interface {
 
 /*
 TargetBase
-@Description: 任务本体
+@Description: 任务本体基类
 */
 type TargetBase struct {
 	TaskCB func() //任务回调
@@ -25,4 +25,16 @@ func NewTargetBase() *TargetBase {
 
 func (t *TargetBase) CheckDone() bool {
 	return false
+}
+
+func (t *TargetBase) OnNotify(event Event) {
+
+}
+
+func (t *TargetBase) GetTargetId() uint32 {
+	return 0
+}
+
+func (t *TargetBase) SetTaskCB(f func()) {
+	t.TaskCB = f
 }
