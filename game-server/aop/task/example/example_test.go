@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestName(t *testing.T) {
+func TestEvent(t *testing.T) {
 	tEvent := TEvent{
 		Subscribers: make([]task.Target, 0),
 	}
@@ -21,4 +21,8 @@ func TestName(t *testing.T) {
 	tEvent.Data = 1
 	tEvent.Notify()
 	fmt.Println("CheckDone", tg.CheckDone())
+}
+
+func TestTask(t *testing.T) {
+	NewTTask(nil)
 }

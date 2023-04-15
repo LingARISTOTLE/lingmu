@@ -1,17 +1,12 @@
 package task
 
-type Task struct {
-	Conf    *Config
-	Next    *Task
-	Status  Status
-	Targets []*Target
+type Task interface {
+	Accept(conf *Config) //接收任务
+	Finish()             //完成任务
+	TargetDoneCallBack() //任务完成后回调
 }
 
-func NewTask(config *Config) *Task {
-	t := &Task{
-		Conf: config,
-	}
-	return t
+type Base struct {
 }
 
 /*
@@ -20,8 +15,8 @@ Accept
 @receiver t
 @param config
 */
-func (t *Task) Accept(config *Config) {
-	t.Status = ACCEPT
+func (b *Base) Accept(config *Config) {
+
 }
 
 /*
@@ -29,8 +24,8 @@ Finish
 @Description: 完成任务
 @receiver t
 */
-func (t *Task) Finish() {
-	t.Status = FINISH
+func (b *Base) Finish() {
+
 }
 
 /*
@@ -38,6 +33,17 @@ TargetDoneCallBack
 @Description: 任务完成后回调
 @receiver t
 */
-func (t *Task) TargetDoneCallBack() {
+func (b *Base) TargetDoneCallBack() {
 
 }
+
+//	func NewTask(config *Config) *Task {
+//		t := &Task{
+//			Conf: config,
+//		}
+//		return t
+//	}
+//	Next
+//*Task
+//Status  Status
+//Targets []*Target
