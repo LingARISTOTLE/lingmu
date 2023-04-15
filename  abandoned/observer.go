@@ -1,4 +1,4 @@
-package task
+package _abandoned
 
 type Observer struct {
 	subs map[*Subscriber]struct{}

@@ -1,4 +1,4 @@
-package task
+package _abandoned
 
 type Subscriber struct {
 }
