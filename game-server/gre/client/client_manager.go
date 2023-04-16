@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"lingmu/game-server/aop/logger"
 	"lingmu/game-server/network"
 	"lingmu/game-server/network/protocol/gen/messageId"
 	"os"
@@ -23,13 +24,13 @@ NewClient
 */
 func NewClient() *ClientManager {
 	c := &ClientManager{
-		cli:             network.NewClient(":8023"),
+		cli:             network.NewClient(":8023", 200, logger.Logger),
 		inputHandlers:   map[string]InputHandler{},
 		messageHandlers: map[messageId.MessageId]MessageHandler{},
 		console:         NewClientConsole(),
 	}
 
-	c.cli.OnMessage = c.OnMessage
+	c.cli.OnMessageCB = c.OnMessage
 	c.cli.ChMsg = make(chan *network.Message, 1) //消息通道缓存长度为1
 	c.chInput = make(chan *InputParam, 1)        //客户端输入通道缓冲长度为1
 	c.console.chInput = c.chInput
@@ -66,7 +67,7 @@ func (c *ClientManager) Run() {
 	go c.cli.Run()
 }
 
-func (c *ClientManager) OnMessage(packet *network.ClientPacket) {
+func (c *ClientManager) OnMessage(packet *network.Packet) {
 	//把uint64转换为int32
 	if handler, ok := c.messageHandlers[messageId.MessageId(packet.Msg.Id)]; ok {
 		handler(packet)

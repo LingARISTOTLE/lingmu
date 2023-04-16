@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-type MessageHandler func(packet *network.ClientPacket)
+type MessageHandler func(packet *network.Packet)
 
 type InputHandler func(param *InputParam)
 
@@ -42,7 +42,7 @@ OnCreatePlayerRsp
 @receiver c
 @param packet
 */
-func (c *ClientManager) OnCreatePlayerRsp(packet *network.ClientPacket) {
+func (c *ClientManager) OnCreatePlayerRsp(packet *network.Packet) {
 	fmt.Println("角色创建成功")
 }
 
@@ -72,7 +72,7 @@ OnLoginRsp
 @receiver c
 @param packet
 */
-func (c *ClientManager) OnLoginRsp(packet *network.ClientPacket) {
+func (c *ClientManager) OnLoginRsp(packet *network.Packet) {
 	//写回包暂且为nil
 	rsp := &player.SCLogin{}
 
@@ -118,7 +118,7 @@ OnAddFriendRsp
 @receiver c
 @param packet
 */
-func (c *ClientManager) OnAddFriendRsp(packet *network.ClientPacket) {
+func (c *ClientManager) OnAddFriendRsp(packet *network.Packet) {
 
 }
 
@@ -153,7 +153,7 @@ OnDelFriendRsp
 @receiver c
 @param param
 */
-func (c *ClientManager) OnDelFriendRsp(packet *network.ClientPacket) {
+func (c *ClientManager) OnDelFriendRsp(packet *network.Packet) {
 	fmt.Println("删除成功")
 }
 
@@ -201,6 +201,6 @@ OnSendChatMsgRsp
 @Description: 发送信息写回
 @receiver c
 */
-func (c *ClientManager) OnSendChatMsgRsp(packet *network.ClientPacket) {
+func (c *ClientManager) OnSendChatMsgRsp(packet *network.Packet) {
 	fmt.Println("发送消息成功")
 }

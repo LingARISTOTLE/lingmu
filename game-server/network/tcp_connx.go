@@ -161,6 +161,7 @@ func (c *TcpConnX) HandleWrite() {
 				fmt.Printf("write message %v error: msg is not bytes", reflect.TypeOf(signal))
 				return
 			}
+			//写回
 			err := c.msgParser.Write(c, data...)
 
 			if err != nil {
@@ -273,6 +274,14 @@ func (c *TcpConnX) AsyncSendLastPacket(msgID uint16, msg interface{}) bool {
 
 }
 
+/*
+AsyncSend
+@Description: 异步发送消息
+@receiver c
+@param msgID
+@param msg
+@return bool
+*/
 func (c *TcpConnX) AsyncSend(msgID uint16, msg interface{}) bool {
 	if c.IsShutdown() {
 		return false
@@ -289,6 +298,7 @@ func (c *TcpConnX) AsyncSend(msgID uint16, msg interface{}) bool {
 		return false
 	}
 
+	//发送到发送通道
 	err = c.Signal(data)
 	if err != nil {
 		c.Close()

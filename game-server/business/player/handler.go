@@ -29,17 +29,7 @@ func (p *Player) AddFriend(packet *network.Message) {
 		p.FriendList = append(p.FriendList, request.UId)
 	}
 
-	bytes, err := proto.Marshal(&player.SCSendChatMsg{})
-	if err != nil {
-		return
-	}
-
-	response := &network.Message{
-		Id:   uint64(messageId.MessageId_SCAddFriend),
-		Data: bytes,
-	}
-
-	p.Session.SendMsg(response)
+	p.SendMsg(messageId.MessageId_SCAddFriend, &player.SCSendChatMsg{})
 }
 
 /*
@@ -57,18 +47,7 @@ func (p *Player) DelFriend(packet *network.Message) {
 	//删除玩家的好友
 	p.FriendList = sugar.DelOneInSlice(request.UId, p.FriendList)
 
-	//生成返回包
-	bytes, err := proto.Marshal(&player.SCDelFriend{})
-	if err != nil {
-		return
-	}
-
-	response := &network.Message{
-		Id:   uint64(messageId.MessageId_SCDelFriend),
-		Data: bytes,
-	}
-
-	p.Session.SendMsg(response)
+	p.SendMsg(messageId.MessageId_SCDelFriend, &player.SCDelFriend{})
 }
 
 /*
@@ -86,16 +65,48 @@ func (p *Player) ResolveChatMsg(packet *network.Message) {
 	}
 	//打印聊天内容
 	fmt.Println(request.Msg.Content)
-	//收到消息，然后转发给客户端
-	bytes, err := proto.Marshal(&player.SCSendChatMsg{})
-	if err != nil {
-		return
-	}
 
-	response := &network.Message{
-		Id:   uint64(messageId.MessageId_SCSendChatMsg),
-		Data: bytes,
-	}
-
-	p.Session.SendMsg(response)
+	//p.Session.SendMsg(response)
+	p.SendMsg(messageId.MessageId_SCSendChatMsg, &player.SCSendChatMsg{})
 }
+
+func (p *Player) SendMsg(ID messageId.MessageId, message proto.Message) {
+	id := uint64(ID)
+	p.Session.AsyncSend(uint16(id), message)
+}
+
+//bytes, err := proto.Marshal(&player.SCSendChatMsg{})
+//if err != nil {
+//	return
+//}
+//
+//response := &network.Message{
+//	Id:   uint64(messageId.MessageId_SCAddFriend),
+//	Data: bytes,
+//}
+
+//p.Session.SendMsg(response)
+
+////生成返回包
+//bytes, err := proto.Marshal(&player.SCDelFriend{})
+//if err != nil {
+//	return
+//}
+//
+//response := &network.Message{
+//	Id:   uint64(messageId.MessageId_SCDelFriend),
+//	Data: bytes,
+//}
+//
+//p.Session.SendMsg(response)
+
+//收到消息，然后转发给客户端
+//bytes, err := proto.Marshal(&player.SCSendChatMsg{})
+//if err != nil {
+//	return
+//}
+//
+//response := &network.Message{
+//	Id:   uint64(messageId.MessageId_SCSendChatMsg),
+//	Data: bytes,
+//}

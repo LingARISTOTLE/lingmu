@@ -1,4 +1,4 @@
-package _abandoned
+package abandoned
 
 type Observer struct {
 	subs map[*Subscriber]struct{}
