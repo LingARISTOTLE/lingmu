@@ -3,25 +3,26 @@ package network
 import (
 	"encoding/binary"
 	"fmt"
+	"lingmu/ abandoned"
 	"net"
 	"time"
 )
 
 type Session struct {
-	UId            uint64        //连接序号
-	Conn           net.Conn      //连接
-	IsClose        bool          //连接是否关闭
-	packer         *NormalPacker //打包方式
-	WriteCh        chan *Message //用于写回的通道，当处理完请求后会生成响应包放在chWrite管道
-	IsPlayerOnline bool          //玩家是否在线
+	UId            uint64                   //连接序号
+	Conn           net.Conn                 //连接
+	IsClose        bool                     //连接是否关闭
+	packer         *_abandoned.NormalPacker //打包方式
+	WriteCh        chan *Message            //用于写回的通道，当处理完请求后会生成响应包放在chWrite管道
+	IsPlayerOnline bool                     //玩家是否在线
 	MessageHandler func(packet *SessionPacket)
 }
 
 func NewSession(conn net.Conn) *Session {
 	return &Session{
 		Conn:    conn,
-		packer:  NewNormalPacker(binary.BigEndian), //采用大端方式去解析
-		WriteCh: make(chan *Message, 10),           //新建一个Message管道，一次能进行10个Message的写回
+		packer:  _abandoned.NewNormalPacker(binary.BigEndian), //采用大端方式去解析
+		WriteCh: make(chan *Message, 10),                      //新建一个Message管道，一次能进行10个Message的写回
 	}
 }
 
