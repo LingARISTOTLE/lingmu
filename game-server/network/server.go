@@ -111,23 +111,29 @@ func (s *Server) Run() {
 			}
 			return
 		}
+
 		tempDelay = 0
 
 		//判断连接数
 		if atomic.LoadInt64(&s.counter) >= int64(s.MaxConnNum) {
+			//达到最大连接数，那么关闭
 			conn.Close()
 			fmt.Printf("too many connections %v", atomic.LoadInt64(&s.counter))
 			continue
 		}
 
+		//与该用户生成连接
 		tcpConnX, err := NewTcpConnX(conn, s.connBuffSize, s.logger)
 		if err != nil {
 			fmt.Printf("%v", err)
 			return
 		}
 
+		//注册连接
 		s.addConn(conn, tcpConnX)
 		tcpConnX.Impl = s
+
+		//启动读写协程
 		s.wgConn.Add(1)
 		go func() {
 			tcpConnX.Connect()
@@ -138,6 +144,11 @@ func (s *Server) Run() {
 
 }
 
+/*
+Close
+@Description: 关闭监听以及连接，关闭过程原子操作
+@receiver s
+*/
 func (s *Server) Close() {
 	s.listen.Close()
 	s.wgLn.Wait()
@@ -151,8 +162,16 @@ func (s *Server) Close() {
 	s.wgConn.Wait()
 }
 
+/*
+addConn
+@Description: 将连接添加到server的集合，统一管理
+@receiver s
+@param conn
+@param tcpConnX
+*/
 func (s *Server) addConn(conn net.Conn, tcpConnX *TcpConnX) {
 	s.mutexConn.Lock()
+	//连接数++
 	atomic.AddInt64(&s.counter, 1)
 	s.connSet[conn] = conn
 	nowTime := time.Now().Unix()
@@ -163,6 +182,13 @@ func (s *Server) addConn(conn net.Conn, tcpConnX *TcpConnX) {
 	tcpConnX.OnConnect()
 }
 
+/*
+removeConn
+@Description: 移除管理的连接
+@receiver s
+@param conn
+@param tcpConn
+*/
 func (s *Server) removeConn(conn net.Conn, tcpConn *TcpConnX) {
 	tcpConn.Close()
 	s.mutexConn.Lock()

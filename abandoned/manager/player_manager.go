@@ -33,7 +33,7 @@ func (pm *PlayManager) Add(p *player.Player) {
 	}
 	pm.players[p.UId] = p
 	//添加玩家在线后，启动玩家协程
-	go p.Run()
+	go p.Start()
 }
 
 func (pm *PlayManager) Del(p player.Player) {
