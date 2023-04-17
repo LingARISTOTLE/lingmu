@@ -1,6 +1,8 @@
 package example
 
-import "lingmu/game-server/aop/task"
+import (
+	"lingmu/game-server/business/module/task"
+)
 
 type TEvent struct {
 	Data        int

@@ -93,6 +93,7 @@ func (s *Server) Run() {
 
 	for {
 		conn, err := s.listen.AcceptTCP()
+		//设置超时时间
 		if err != nil {
 			if _, ok := err.(net.Error); ok {
 				if tempDelay == 0 {
@@ -112,6 +113,7 @@ func (s *Server) Run() {
 		}
 		tempDelay = 0
 
+		//判断连接数
 		if atomic.LoadInt64(&s.counter) >= int64(s.MaxConnNum) {
 			conn.Close()
 			fmt.Printf("too many connections %v", atomic.LoadInt64(&s.counter))

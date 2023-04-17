@@ -3,7 +3,7 @@ package world
 import (
 	"fmt"
 	"github.com/golang/protobuf/proto"
-	userPlayer "lingmu/game-server/business/player"
+	userPlayer "lingmu/game-server/business/module/player"
 	"lingmu/game-server/network"
 	"lingmu/game-server/network/protocol/gen/messageId"
 	"lingmu/game-server/network/protocol/gen/player"

@@ -1,6 +1,8 @@
 package player
 
-import "lingmu/game-server/network/protocol/gen/messageId"
+import (
+	"lingmu/game-server/network/protocol/gen/messageId"
+)
 
 /*
 HandlerRegister

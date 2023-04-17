@@ -33,13 +33,17 @@ func NewManagerHost() *ManagerHost {
 
 var MM *ManagerHost
 
-func (m *ManagerHost) Run() {
+func (m *ManagerHost) Start() {
 	//注册组管理器处理器
 	m.HandlerRegister()
 	//启动服务器
 	go m.Server.Run()
 	//启动玩家管理器
 	go m.Pm.Run()
+}
+
+func (m *ManagerHost) Stop() {
+
 }
 
 /*

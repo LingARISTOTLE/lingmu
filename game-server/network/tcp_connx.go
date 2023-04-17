@@ -21,6 +21,10 @@ type IConn interface {
 
 const timeoutTime = 30 // 连接通过验证的超时时间
 
+/*
+TcpConnX
+@Description: 负责处理维护TCP连接，同时维护发送信道
+*/
 type TcpConnX struct {
 	Conn        net.Conn         //连接
 	Impl        IConn            //IConn的实现
@@ -124,6 +128,7 @@ func (c *TcpConnX) HandleRead() {
 
 	defer c.Close()
 
+	//读协程不关闭，不能close
 	defer c.wgRW.Done()
 
 	for {
@@ -151,6 +156,8 @@ func (c *TcpConnX) HandleWrite() {
 	}()
 
 	defer c.Close()
+
+	//服务关闭时，必须等待写协程执行到此处
 	defer c.wgRW.Done()
 
 	for {

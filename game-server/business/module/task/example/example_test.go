@@ -2,7 +2,7 @@ package example
 
 import (
 	"fmt"
-	"lingmu/game-server/aop/task"
+	"lingmu/game-server/business/module/task"
 	"testing"
 )
 

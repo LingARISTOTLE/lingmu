@@ -1,6 +1,8 @@
 package manager
 
-import "lingmu/game-server/business/player"
+import (
+	"lingmu/game-server/business/module/player"
+)
 
 /*
 PlayManager

@@ -1,15 +1,17 @@
 package example
 
-import "lingmu/game-server/aop/task"
+import (
+	task2 "lingmu/game-server/business/module/task"
+)
 
 type TTask struct {
-	Conf    *task.Config
+	Conf    *task2.Config
 	Next    *TTask
-	Status  task.Status
-	Targets []task.Target
+	Status  task2.Status
+	Targets []task2.Target
 }
 
-func NewTTask(config *task.Config) *TTask {
+func NewTTask(config *task2.Config) *TTask {
 	t := &TTask{
 		Conf: config,
 	}
@@ -17,11 +19,11 @@ func NewTTask(config *task.Config) *TTask {
 }
 
 func (t *TTask) Finish() {
-	t.Status = task.FINISH
+	t.Status = task2.FINISH
 }
 
-func (t *TTask) Accept(config *task.Config) {
-	t.Status = task.FINISH
+func (t *TTask) Accept(config *task2.Config) {
+	t.Status = task2.FINISH
 }
 
 func (t *TTask) TargetDoneCallBack() {
