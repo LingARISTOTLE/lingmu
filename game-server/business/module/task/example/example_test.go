@@ -2,13 +2,13 @@ package example
 
 import (
 	"fmt"
-	"lingmu/game-server/business/module/task"
+	"lingmu/game-server/business/module/condition"
 	"testing"
 )
 
 func TestEvent(t *testing.T) {
 	tEvent := TEvent{
-		Subscribers: make([]task.Target, 0),
+		Subscribers: make([]condition.Condition, 0),
 	}
 
 	tg := &TTarget{
@@ -20,7 +20,7 @@ func TestEvent(t *testing.T) {
 	tEvent.Attach(tg)
 	tEvent.Data = 1
 	tEvent.Notify()
-	fmt.Println("CheckDone", tg.CheckDone())
+	fmt.Println("CheckArrived", tg.CheckArrived())
 }
 
 func TestTask(t *testing.T) {
