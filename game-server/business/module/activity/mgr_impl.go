@@ -5,8 +5,13 @@ import (
 	"sync"
 )
 
+/*
+Manager
+@Description: 活动管理器
+*/
 type Manager struct {
-	*base.MetricsBase
+	*base.MetricsBase  //指标类
+	*base.DBActionBase //DB操作类
 }
 
 var (

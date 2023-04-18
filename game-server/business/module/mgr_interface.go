@@ -1,14 +1,22 @@
 package module
 
-// MgrInterface 管理器接口定义
+/*
+MgrInterface
+@Description: 管理器接口定义
+*/
 type MgrInterface interface {
-	OnStart()
-	AfterStart()
-	OnStop()
-	AfterStop()
+	OnStart()    //启动执行
+	AfterStart() //开启后执行
+	OnStop()     //关闭执行
+	AfterStop()  //关闭后执行
 }
 
+/*
+Metrics
+@Description: 指标接口
+*/
 type Metrics interface {
-	GetName() string
-	SetName(str string)
+	GetName() string     //获取名
+	SetName(str string)  //设置名
+	Description() string //描述
 }

@@ -1,5 +1,9 @@
 package activity
 
-type Conf struct {
-	Id uint32
-}
+///*
+//Conf
+//@Description: 活动
+//*/
+//type Conf struct {
+//	Id uint32
+//}
