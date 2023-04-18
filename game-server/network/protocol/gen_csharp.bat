@@ -23,6 +23,6 @@ mkdir doc
 
 mkdir csharp_out
 
-protoc --csharp_out=./csharp_out --doc_out=./doc --doc_opt=html,index.html proto/*.proto
+protoc --csharp_out=./csharp_out  --csharp_opt=file_extension=.g.cs  --doc_out=./doc --doc_opt=html,index.html proto/*.proto
 
 pause

@@ -4,6 +4,8 @@ package player;
 
 option go_package = "/player";
 
+option csharp_namespace = "playerG";
+
 //创建用户包
 message CSCreateUser{
   string Username = 1;

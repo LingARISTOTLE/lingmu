@@ -4,7 +4,7 @@ package  instantiateType;
 
 option go_package="/instantiateType";
 
-option csharp_namespace = "instantiateType";
+option csharp_namespace = "instantiateTypeG";
 
 enum InstantiateType {
   None = 0;
