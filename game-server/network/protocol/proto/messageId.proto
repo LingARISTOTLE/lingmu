@@ -4,6 +4,8 @@ package messageId;
 
 option go_package = "/messageId";
 
+option csharp_namespace = "messageId";
+
 //定义Message消息的id
 enum MessageId{
 
@@ -30,5 +32,13 @@ enum MessageId{
   //聊天包
   CSSendChatMsg = 100005;
   SCSendChatMsg = 100006;
+
+  ClientRequestObjectSync = 200010;
+  ServerRequestObjectSync = 200011;
+  ServerRequestObjectSyncComplete = 200012;
+  Instantiate = 200020;
+  Destroy = 200021;
+  DestroyNetworkObjects = 200022;
+  SyncTransform = 200030;
 
 }

@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package  instantiateType;
+
+option go_package="/instantiateType";
+
+option csharp_namespace = "instantiateType";
+
+enum InstantiateType {
+  None = 0;
+  Player = 10001;
+
+}
