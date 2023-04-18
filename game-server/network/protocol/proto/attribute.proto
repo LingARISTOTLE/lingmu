@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package  messageId;
+package  attributeG;
 
 option go_package="/attribute";
 

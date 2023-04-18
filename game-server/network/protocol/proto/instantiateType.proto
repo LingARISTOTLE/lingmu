@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package  instantiateType;
+package  instantiateTypeG;
 
 option go_package="/instantiateType";
 

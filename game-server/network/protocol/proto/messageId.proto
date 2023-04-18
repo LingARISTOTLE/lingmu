@@ -1,10 +1,10 @@
 syntax = "proto3";
 
-package messageId;
+package  messageIdG;
 
 option go_package = "/messageId";
 
-option csharp_namespace = "messageId";
+option csharp_namespace = "messageIdG";
 
 //定义Message消息的id
 enum MessageId{
