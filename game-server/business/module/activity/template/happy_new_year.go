@@ -12,6 +12,15 @@ type HappyNewYear struct {
 	EndTime   time.Time //结束时间
 }
 
-func (y *HappyNewYear) Init(conf Conf) *HappyNewYear {
+func (h *HappyNewYear) Init(conf Conf) *HappyNewYear {
 	return &HappyNewYear{}
+}
+
+/*
+GetReward
+@Description: 获取奖励
+@receiver h
+*/
+func (h *HappyNewYear) GetReward() {
+
 }
