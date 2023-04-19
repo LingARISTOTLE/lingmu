@@ -34,7 +34,7 @@ type TcpConnX struct {
 	stopped     chan bool        //是否停止连接
 	signal      chan interface{} //发送队列
 	lastSignal  chan interface{} //最终发送队列
-	wgRW        sync.WaitGroup   //等待队列
+	wgRW        sync.WaitGroup   //协程计数器
 	msgParser   *BufferPacker    //网络包缓冲处理类
 	msgBuffSize int              //消息缓冲的大小
 	logger      *spoor.Spoor     //日志
@@ -81,7 +81,7 @@ func NewTcpConnX(conn *net.TCPConn, msgBuffSize int, logger *spoor.Spoor) (*TcpC
 
 /*
 Connect
-@Description: 处理连接
+@Description: 本协程用于维护连接服务，如果规定时间内没有完成连接验证，那么关闭连接，并且新起读写协程
 @receiver c
 */
 func (c *TcpConnX) Connect() {

@@ -175,10 +175,13 @@ func (s *Server) addConn(conn net.Conn, tcpConnX *TcpConnX) {
 	atomic.AddInt64(&s.counter, 1)
 	s.connSet[conn] = conn
 	nowTime := time.Now().Unix()
+	//当前连接数++
 	idCounter := atomic.AddInt64(&s.idCounter, 1)
+	//计算连接id
 	connId := (nowTime << 32) | (s.pid << 24) | idCounter
 	tcpConnX.ConnID = connId
 	s.mutexConn.Unlock()
+	//调用连接时处理方法
 	tcpConnX.OnConnect()
 }
 

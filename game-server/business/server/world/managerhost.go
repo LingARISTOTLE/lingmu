@@ -2,8 +2,8 @@ package world
 
 import (
 	"fmt"
-	"lingmu/abandoned/manager"
 	"lingmu/game-server/aop/logger"
+	"lingmu/game-server/business/module/player"
 	"lingmu/game-server/network"
 	"lingmu/game-server/network/protocol/gen/messageId"
 	"os"
@@ -15,7 +15,7 @@ ManagerHost
 @Description: 复制管理所有manager的manager
 */
 type ManagerHost struct {
-	Pm              *manager.PlayManager                                  //玩家管理器
+	Pm              *player.Manager                                       //玩家管理器
 	Server          *network.Server                                       //服务器
 	Handlers        map[messageId.MessageId]func(message *network.Packet) //消息处理器集合
 	chSessionPacket chan *network.Packet                                  //会话包
@@ -23,7 +23,7 @@ type ManagerHost struct {
 
 func NewManagerHost() *ManagerHost {
 	m := &ManagerHost{
-		Pm: manager.NewPlayManager(),
+		Pm: player.NewPlayerMgr(),
 	}
 	m.Server = network.NewServer(":8023", 100, 200, logger.Logger)
 	m.Server.MessageHandler = m.OnSessionPacket
