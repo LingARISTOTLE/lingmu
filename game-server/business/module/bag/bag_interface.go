@@ -8,5 +8,5 @@ Bag
 */
 type Bag interface {
 	AddItem(item item.Item) //添加物品
-	DelItem(Id uint32)      //删除物品
+	DelItem(item item.Item) //删除物品
 }
