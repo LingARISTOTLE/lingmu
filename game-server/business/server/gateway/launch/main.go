@@ -1,1 +1,5 @@
 package launch
+
+func main() {
+
+}
