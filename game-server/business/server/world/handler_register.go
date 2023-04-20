@@ -5,10 +5,10 @@ import "lingmu/game-server/network/protocol/gen/messageId"
 /*
 HandlerRegister
 @Description: 组管理器网络包处理器注册
-@receiver m
+@receiver w
 */
-func (m *ManagerHost) HandlerRegister() {
-	//m.Handlers[1] = m.UserLogin
-	m.Handlers[messageId.MessageId_CSCreatePlayer] = m.CreatePlayer
-	m.Handlers[messageId.MessageId_CSLogin] = m.UserLogin
+func (w *World) HandlerRegister() {
+	//w.Handlers[1] = w.UserLogin
+	w.Handlers[messageId.MessageId_CSCreatePlayer] = w.CreatePlayer
+	w.Handlers[messageId.MessageId_CSLogin] = w.UserLogin
 }

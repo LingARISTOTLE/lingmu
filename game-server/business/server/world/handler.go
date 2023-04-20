@@ -13,10 +13,10 @@ import (
 /*
 CreatePlayer
 @Description: 创建玩家处理方法
-@receiver m
+@receiver w
 @param message
 */
-func (m *ManagerHost) CreatePlayer(message *network.Packet) {
+func (w *World) CreatePlayer(message *network.Packet) {
 	//创建玩家消息
 	msg := &player.CSCreateUser{}
 	err := proto.Unmarshal(message.Msg.Data, msg)
@@ -24,28 +24,28 @@ func (m *ManagerHost) CreatePlayer(message *network.Packet) {
 		return
 	}
 	fmt.Println("创建玩家", msg)
-	m.SendMsg(uint64(messageId.MessageId_SCCreatePlayer), &player.SCCreateUser{}, message.Conn)
+	w.SendMsg(uint64(messageId.MessageId_SCCreatePlayer), &player.SCCreateUser{}, message.Conn)
 }
 
 /*
 SendMsg
 @Description: 发送消息处理方法
-@receiver m
+@receiver w
 @param id
 @param message
 @param session
 */
-func (m *ManagerHost) SendMsg(id uint64, message proto.Message, session *network.TcpConnX) {
+func (w *World) SendMsg(id uint64, message proto.Message, session *network.TcpConnX) {
 	session.AsyncSend(uint16(id), message)
 }
 
 /*
 UserLogin
 @Description: 用户登录后包装用户
-@receiver m
+@receiver w
 @param packet
 */
-func (m *ManagerHost) UserLogin(packet *network.Packet) {
+func (w *World) UserLogin(packet *network.Packet) {
 	msg := &player.CSLogin{}
 	err := proto.Unmarshal(packet.Msg.Data, msg)
 
@@ -59,7 +59,7 @@ func (m *ManagerHost) UserLogin(packet *network.Packet) {
 	newPlayer.Session = packet.Conn
 
 	//将当前玩家交给PlayerManager去管理，玩家管理器会为当前玩家启动协程
-	m.Pm.Add(newPlayer)
+	w.Pm.Add(newPlayer)
 }
 
 //每个玩家都拥有写回管道

@@ -20,3 +20,10 @@ type Metrics interface {
 	SetName(str string)  //设置名
 	Description() string //描述
 }
+
+/*
+Abstract
+@Description: 抽象
+*/
+type Abstract interface {
+}

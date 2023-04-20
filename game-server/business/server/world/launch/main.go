@@ -9,12 +9,12 @@ import (
 func main() {
 
 	//创建管理器组管理器
-	world.MM = world.NewManagerHost()
+	world.Oasis = world.NewWorld()
 	//启动组管理器
-	world.MM.Start()
+	world.Oasis.Start()
 	fmt.Println("服务启动")
 
 	//主线线程阻塞
-	sugar.WaitSignal(world.MM.OnSystemSignal)
+	sugar.WaitSignal(world.Oasis.OnSystemSignal)
 
 }
